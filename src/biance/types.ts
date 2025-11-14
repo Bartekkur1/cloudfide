@@ -1,16 +1,19 @@
 export interface Kline {
   openTime: number;
-  closeTime: number;
   openPrice: number;
   highPrice: number;
   lowPrice: number;
-}
-
-export interface HttpClient {
-  get: () => Promise<void>
+  closePrice: number;
+  closeTime: number;
 }
 
 export type TimeRange = {
   start: Date;
   end: Date;
+}
+
+export interface FechHistoricalDataParams {
+  currency: string;
+  timeRange: TimeRange;
+  interval: string;
 }
