@@ -1,3 +1,4 @@
+import { HttpClientError } from "../util/errors";
 import { HttpClient } from "../util/types";
 import { BianceApiClient } from "./api-client";
 
@@ -81,7 +82,7 @@ describe('Biance Api Client Tests', () => {
   test('Should handle network error', async () => {
     try {
       getSpy.mockImplementation(() => {
-        throw new Error('Network error');
+        throw new HttpClientError('Network error!')
       })
       await bianceApiClient.fetchHistoricalData({
         currency: 'BTC',
@@ -92,9 +93,8 @@ describe('Biance Api Client Tests', () => {
         interval: '1d'
       });
     } catch (error) {
-      console.log(error);
       expect(error).not.toBeUndefined();
-      expect((error as Error).message).toBe('Network error');
+      expect((error as Error).message).toBe('Network error!');
       getSpy.mockRestore();
       return;
     }

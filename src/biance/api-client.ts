@@ -1,11 +1,8 @@
+import { HttpClientError } from '../util/errors';
 import { HttpClient } from '../util/types';
-import { FechHistoricalDataParams, Kline, TimeRange } from './types';
+import { InvalidInputError } from './errors';
+import { FechHistoricalDataParams, Kline } from './types';
 
-class InvalidInputError extends Error {
-  constructor(message: string) {
-    super(message);
-  }
-}
 
 type RawKline = [number, string, string, string, string, string, number];
 
@@ -49,9 +46,11 @@ export class BianceApiClient {
     } catch (error) {
       if (error instanceof InvalidInputError) {
         throw error;
+      } else if (error instanceof HttpClientError) {
+        throw error;
       }
 
-      throw "Error";
+      throw new Error('Unrecognized error');
     }
   }
 }
